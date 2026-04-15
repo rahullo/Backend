@@ -1,0 +1,22 @@
+workflows:
+  ios-release:
+    name: GoalPilot iOS Release
+    environment:
+      node: 20
+      xcode: latest
+    scripts:
+      - name: Install JS dependencies
+        script: |
+          cd frontend
+          npm install
+      - name: Install CocoaPods
+        script: |
+          cd frontend/ios
+          pod install
+      - name: Build iOS archive
+        script: |
+          cd frontend
+          xcodebuild -workspace ios/GoalPilotAI.xcworkspace -scheme GoalPilotAI -configuration Release -sdk iphoneos -archivePath build/GoalPilotAI.xcarchive archive
+    artifacts:
+      - frontend/build/**/*.xcarchive
+      - frontend/build/**/*.ipa
